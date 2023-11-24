@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
-import { {{titleCase name}}Controller } from './controller/{{kebabCase name}}.controller';
-import { {{titleCase name}}Repository } from './repositories/{{kebabCase name}}.repository';
-import { {{titleCase name}}Service } from './services/{{kebabCase name}}.service';
-import { PaginetedCore } from 'src/resources/utils/paginted.core';
+import { {{titleCase name}}Controller } from 'src/presentation/controllers/{{kebabCase name}}.controller';
+import { {{titleCase name}}Repository } from 'src/infraestructure/repositories/{{kebabCase name}}.repository';
+import { {{titleCase name}}Service } from 'src/application/services/{{kebabCase name}}.service';
 
 @Module({
   controllers: [{{titleCase name}}Controller],
-  providers: [{{titleCase name}}Repository, PaginetedCore],
+  providers: [{{titleCase name}}Repository],
   exports: [{{titleCase name}}Repository, {{titleCase name}}Service],
 })
 export class {{titleCase name}}Module {}
