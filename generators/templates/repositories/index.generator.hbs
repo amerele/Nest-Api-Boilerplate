@@ -1,0 +1,59 @@
+import { Injectable } from '@nestjs/common';
+import {Knex} from "knex";
+import { InjectConnection } from "nest-knexjs";
+import { Create{{titleCase name}}Dto } from 'src/resources/{{kebabCase name}}/dto/create-{{kebabCase name}}.dto';
+import { Update{{titleCase name}}Dto } from 'src/resources/{{kebabCase name}}/dto/update-{{kebabCase name}}.dto';
+import { {{titleCase name}} } from 'src/entities/{{kebabCase name}}.entity';
+
+@Injectable()
+export class {{titleCase name}}Repository {
+
+  //Provisório, usar query do Flávio.
+  public async findAll(knexInstance, cdCompany: number): Promise<{{titleCase name}}> {
+    const {{titleCase name}} = await knexInstance('TABELA.{{titleCase name}}')
+      .select('*')
+      .where({ cdCompany, inActive: true })
+      .orderBy('cd{{titleCase name}}');
+    return {{titleCase name}};
+  }
+
+  public async findByPrimary(
+    knexInstance,
+    cd{{titleCase name}}: number
+  ): Promise<{{titleCase name}}> {
+    const {{titleCase name}} = await knexInstance('TABELA.{{titleCase name}}')
+      .where({cd{{titleCase name}} })
+      .select('*');
+    return {{titleCase name}};
+  }
+
+  public async create(
+    knexInstance,
+    body: Create{{titleCase name}}Dto,
+    cdCompany: number
+  ): Promise<{{titleCase name}}> {
+    const {{titleCase name}} = await knexInstance('TABELA.{{titleCase name}}')
+      .where({cdCompany})
+      .insert(body)
+      .returning('*');
+    return {{titleCase name}};
+  }
+
+  public async update(
+    knexInstance,
+    cd{{titleCase name}}: number,
+    body: Update{{titleCase name}}Dto,
+  ): Promise<{{titleCase name}}> {
+    const {{titleCase name}} = await knexInstance('TABELA.{{titleCase name}}')
+      .where({ cd{{titleCase name}} })
+      .update(body);
+    return {{titleCase name}};
+  }
+
+  public async delete(knexInstance, cd{{titleCase name}}: number): Promise<{{titleCase name}}> {
+    const {{titleCase name}} = await knexInstance('TABELA.{{titleCase name}}')
+      .where({ cd{{titleCase name}} })
+      .update({ inActive: false });
+    return {{titleCase name}};
+  }
+}

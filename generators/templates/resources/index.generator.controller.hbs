@@ -1,0 +1,47 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query
+} from '@nestjs/common';
+import { {{titleCase name}}Service } from './{{kebabCase name}}.service';
+import { Create{{titleCase name}}Dto } from './dto/create-{{kebabCase name}}.dto';
+import { Update{{titleCase name}}Dto } from './dto/update-{{kebabCase name}}.dto';
+
+@Controller('{{kebabCase name}}')
+export class {{titleCase name}}Controller {
+  constructor(private readonly {{camelCase name}}Service: {{titleCase name}}Service) {}
+
+  @Get()
+  findAll(@Query('cdCompany') cdCompany: string) {
+    return this.{{camelCase name}}Service.findAll(+cdCompany ?? 0);
+  }
+  @Post()
+  create(
+    @Body() create{{titleCase name}}Dto: Create{{titleCase name}}Dto,
+    @Query('cdCompany') cdCompany:string) {
+    return this.{{camelCase name}}Service.create(create{{titleCase name}}Dto, +cdCompany ?? 0);
+  }
+
+  @Get(':cd{{titleCase name}}')
+  findOne(@Param('cd{{titleCase name}}') cd{{titleCase name}}: string) {
+    return this.{{camelCase name}}Service.findOne(+cd{{titleCase name}});
+  }
+
+  @Patch(':cd{{titleCase name}}')
+  update(
+    @Param('cd{{titleCase name}}') cd{{titleCase name}}: string,
+    @Body() update{{titleCase name}}Dto: Update{{titleCase name}}Dto,
+  ) {
+    return this.{{camelCase name}}Service.update(+cd{{titleCase name}}, update{{titleCase name}}Dto);
+  }
+
+  @Delete(':cd{{titleCase name}}')
+  delete(@Param('cd{{titleCase name}}') cd{{titleCase name}}: string) {
+    return this.{{camelCase name}}Service.delete(+cd{{titleCase name}});
+  } 
+}
