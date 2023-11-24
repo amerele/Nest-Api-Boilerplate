@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'PROMO-Backend',
+      name: 'GeParty',
       script: 'dist/main.js',
       watch: false,
       watch_delay: 1000,
@@ -10,11 +10,11 @@ module.exports = {
       env: {
         NODE_PORT: '5001',
         NODE_ENV: 'staging',
-        DB_HOST: '192.168.80.19',
-        DB_PORT: '5432',
-        DB_USER: 'pricemet',
-        DB_PASSWORD: 'Pr#142536@M3t',
-        DB_NAME: 'Varejo',
+        DB_HOST: '',
+        DB_PORT: '',
+        DB_USER: '',
+        DB_PASSWORD: '',
+        DB_NAME: '',
       },
     },
   ],

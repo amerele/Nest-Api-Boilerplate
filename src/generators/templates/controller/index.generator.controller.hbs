@@ -1,0 +1,50 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
+import { Roles } from 'src/resources/utils/decorators/roles.decorator';
+import { RoleEnum } from 'src/entities/role.entity';
+import { Ok } from 'src/resources/utils/responses/response-types/success.types';
+import { PaginetedCore } from 'src/resources/utils/paginted.core';
+import { Create{{titleCase name}}Dto } from '../dto/create-{{kebabCase name}}.dto';
+import { {{titleCase name}}Service } from '../services/{{kebabCase name}}.service';
+
+@Roles(RoleEnum.READ_PARAMETERS)
+@Controller('/{{kebabCase name}}')
+export class {{titleCase name}}Controller {
+  constructor( 
+    private readonly _{{camelCase name}}Service: {{titleCase name}}Service
+  ) {}
+  
+  @Get()
+  public async findAll{{titleCase name}}() {
+    const {{camelCase name}} = this._{{camelCase name}}Service.findAll();
+    return Ok({{camelCase name}});
+  }
+  @Get()
+  public async findByPrimary{{titleCase name}}(@Param('id') id: string) {
+    const {{camelCase name}} = this._{{camelCase name}}Service.findByPrimary(id);
+    return Ok({{camelCase name}});
+  }
+  @Post()
+  public async add(
+    @Body() create{{camelCase name}}Dto: Create{{titleCase name}}Dto,
+    @Param('id') id:string) {
+    const {{camelCase name}} = this._{{camelCase name}}Service.create{{titleCase name}}(create{{titleCase name}}Dto, id);
+    return {{camelCase name}}
+  }
+  @Delete()
+  public async delete(@Param('id') id: string) {
+    const {{camelCase name}} = this._{{camelCase name}}Service.delete{{titleCase name}}(
+      id,
+    );
+    return Ok({{camelCase name}});
+  }
+}
+
