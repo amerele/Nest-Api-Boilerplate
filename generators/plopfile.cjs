@@ -10,23 +10,16 @@ module.exports = function (plop) {
     ],
     actions: [
        {
-        //CREATES CREATE-DTO
+        //CREATES BODY-DTO
         type: 'add',
-        path: '../src/application/DTOs/{{kebabCase name}}/create-{{kebabCase name}}.dto.ts',
-        templateFile: './templates/dto/create.generator.hbs',
-        skipIfExists: true,
-      },
-      {
-        //CREATES UPDATE-DTO
-        type: 'add',
-        path: '../src/application/DTOs/{{kebabCase name}}/update-{{kebabCase name}}.dto.ts',
-        templateFile: './templates/dto/update.generator.hbs',
+        path: '../src/application/DTOs/{{kebabCase name}}/body-{{kebabCase name}}.dto.ts',
+        templateFile: './templates/dto/body.generator.hbs',
         skipIfExists: true,
       },
        {
-        //CREATE MODULE
+        //CREATES MODULE
         type: 'add',
-        path: '../src/domain/{{kebabCase name}}.module.ts',
+        path: '../src/domain/modules/{{kebabCase name}}.module.ts',
         templateFile: './templates/index.generator.module.hbs',
         skipIfExists: true,
       },
@@ -64,3 +57,4 @@ module.exports = function (plop) {
     ],
   });
 };
+ 

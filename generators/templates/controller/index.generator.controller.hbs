@@ -3,14 +3,13 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
   Query,
 } from '@nestjs/common';
 import { Ok } from '../responses/success.types';
-import { Create{{titleCase name}}Dto } from 'src/application/DTOs/create-{{kebabCase name}}.dto';
-import { Create{{titleCase name}}Dto } from 'src/application/DTOs/update-{{kebabCase name}}.dto';
+import { Body{{titleCase name}}Dto } from 'src/application/DTOs/clients/body-{{kebabCase name}}.dto';
 import { {{titleCase name}}Service } from 'src/application/services/{{kebabCase name}}.service';
 
 @Controller('/{{kebabCase name}}')
@@ -25,24 +24,24 @@ export class {{titleCase name}}Controller {
     return Ok({{camelCase name}});
   }
   @Get()
-  public async findByPrimary(@Param('id') id: string) {
+  public async findByPrimary(@Param('id') id: number) {
     const {{camelCase name}} = this._{{camelCase name}}Service.findByPrimary(id);
     return Ok({{camelCase name}});
   }
   @Post()
   public async add(
-    @Body() create{{camelCase name}}Dto: Create{{titleCase name}}Dto,
-    @Param('id') id:string) {
-    const {{camelCase name}} = this._{{camelCase name}}Service.create(create{{titleCase name}}Dto, id);
+    @Body() body: Body{{titleCase name}}Dto,
+    @Param('id') id: number) {
+    const {{camelCase name}} = this._{{camelCase name}}Service.createOrUpdate(body, id);
     return {{camelCase name}}
   }
   @Put()
-  public async update(@Body() update{{camelCase name}}Dto: Update{{titleCase name}}Dto) {
-    const {{camelCase name}} = this._{{camelCase name}}Service.update(id);
+  public async update(@Body() body: Body{{titleCase name}}Dto, id: number) {
+    const {{camelCase name}} = this._{{camelCase name}}Service.createOrUpdate(body, id);
     return Ok({{camelCase name}});
   }
   @Delete()
-  public async delete(@Param('id') id: string) {
+  public async delete(@Param('id') id: number) {
     const {{camelCase name}} = this._{{camelCase name}}Service.delete(
       id,
     );
@@ -50,3 +49,4 @@ export class {{titleCase name}}Controller {
   }
 }
 
+ 

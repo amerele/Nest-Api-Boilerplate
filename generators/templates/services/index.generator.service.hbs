@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { {{titleCase name}}Repository } from 'src/infraestructure/repositories/{{kebabCase name}}.repository';
-import { Create{{titleCase name}}Dto } from '../DTOs/{{camelCase name}}/create-{{kebabCase name}}.dto';
+import { Body{{titleCase name}}Dto } from '../DTOs/{{camelCase name}}/body-{{kebabCase name}}.dto';
 
 @Injectable()
 export class {{titleCase name}}Service {
@@ -15,7 +15,7 @@ export class {{titleCase name}}Service {
     }
   }
 
-  public async findByPrimary(id: string) {
+  public async findByPrimary(id: number) {
     try {
       return this._{{camelCase name}}Repository.findByPrimary(id);
     } catch (error) {
@@ -24,13 +24,13 @@ export class {{titleCase name}}Service {
     }
   }
 
-  public async create{{titleCase name}}(
-    create{{camelCase name}}Dto: Create{{titleCase name}}Dto,
-    id: string,
+  public async createOrUpdate(
+    body: Body{{titleCase name}}Dto,
+    id: number,
   ) {
     try {
-      return this._{{camelCase name}}Repository.createOrUpdate{{titleCase name}}(
-        create{{camelCase name}}Dto,
+      return this._{{camelCase name}}Repository.createOrUpdate(
+        body,
         id,
       );
     } catch (error) {
@@ -39,9 +39,9 @@ export class {{titleCase name}}Service {
     }
   }
 
-  public async delete{{titleCase name}}(id: string) {
+  public async delete(id: number) {
     try {
-      return this._{{camelCase name}}Repository.delete{{titleCase name}}(id);
+      return this._{{camelCase name}}Repository.delete(id);
     } catch (error) {
       console.log(error);
       throw error;
