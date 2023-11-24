@@ -35,3 +35,9 @@ yarn.lock
 !.vscode/launch.json
 !.vscode/extensions.json
 ecosystem.config.js
+generators/templates/services/index.generator.service.hbs
+generators/templates/repositories/index.generator.hbs
+generators/templates/entities/index.generator.hbs
+generators/templates/dto/create.generator.hbs
+generators/templates/controller/index.generator.controller.hbs
+generators/plopfile.cjs

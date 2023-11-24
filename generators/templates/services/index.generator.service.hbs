@@ -1,42 +1,50 @@
-import { Injectable } from '@nestjs/common'; import {
-{{titleCase name}}Repository } from 'src/resources/{{kebabCase
-  name
-}}/repositories/{{kebabCase name}}.repository'; import { Create{{titleCase
-  name
-}}Dto } from '../dto/create-{{kebabCase name}}.dto'; @Injectable() export class
-{{titleCase name}}Service { constructor( private readonly _{{camelCase
-  name
-}}Repository:
-{{titleCase name}}Repository, ) {} public async findAll() { const knexInstance =
-await this._{{camelCase name}}Repository.getKnexInstance(); try { return this._{{camelCase
-  name
-}}Repository.findAll(knexInstance); } catch (error) { console.log(error); throw
-error; } finally{ await this._{{camelCase
-  name
-}}Repository.destroyConnection(knexInstance); } } public async findByPrimary(id:
-string) { const knexInstance = await this._{{camelCase
-  name
-}}Repository.getKnexInstance(); try { return this._{{camelCase
-  name
-}}Repository.findByPrimary(knexInstance, id); } catch (error) {
-console.log(error); throw error; } finally{ await this._{{camelCase
-  name
-}}Repository.destroyConnection(knexInstance); } } public async create{{titleCase
-  name
-}}( create{{camelCase name}}Dto: Create{{titleCase name}}Dto, id: string ) {
-const knexInstance = await this._{{camelCase name}}Repository.getKnexInstance();
-try { return this._{{camelCase name}}Repository.create{{titleCase
-  name
-}}(knexInstance, create{{camelCase name}}Dto, id); } catch (error) {
-console.log(error); throw error; } finally{ await this._{{camelCase
-  name
-}}Repository.destroyConnection(knexInstance); } } public async delete{{titleCase
-  name
-}}(id: string) { const knexInstance = await this._{{camelCase
-  name
-}}Repository.getKnexInstance(); try { return this._{{camelCase
-  name
-}}Repository.delete{{titleCase name}}(knexInstance, id); } catch (error) {
-console.log(error); throw error; } finally{ await this._{{camelCase
-  name
-}}Repository.destroyConnection(knexInstance); } } }
+import { Injectable } from '@nestjs/common';
+import { {{titleCase name}}Repository } from 'src/infraestructure/repositories/{{kebabCase name}}.repository';
+import { Create{{titleCase name}}Dto } from '../DTOs/{{camelCase name}}/create-{{kebabCase name}}.dto';
+
+@Injectable()
+export class {{titleCase name}}Service {
+  constructor(private readonly _{{camelCase name}}Repository: {{titleCase name}}Repository) {}
+
+  public async findAll() {
+    try {
+      return this._{{camelCase name}}Repository.findAll();
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  public async findByPrimary(id: string) {
+    try {
+      return this._{{camelCase name}}Repository.findByPrimary(id);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  public async create{{titleCase name}}(
+    create{{camelCase name}}Dto: Create{{titleCase name}}Dto,
+    id: string,
+  ) {
+    try {
+      return this._{{camelCase name}}Repository.createOrUpdate{{titleCase name}}(
+        create{{camelCase name}}Dto,
+        id,
+      );
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  public async delete{{titleCase name}}(id: string) {
+    try {
+      return this._{{camelCase name}}Repository.delete{{titleCase name}}(id);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+}

@@ -1,30 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import {Knex} from "knex";
-import { {{titleCase name}} } from 'src/entities/{{kebabCase name}}.entity';
-import { BaseKnexRepository } from 'src/repositories/base-knex.repository';
-import { Create{{titleCase name}}Dto } from '../dto/create-{{kebabCase name}}.dto';
+import { {{titleCase name}} } from 'src/domain/entities/{{cammelCase name}}.entity';
+import { BaseKnexRepository } from './base-knex.repository';
+import { Create{{titleCase name}}Dto } from 'src/application/DTOs/{{kebabCase name}}/create-{{kebabCase name}}.dto';
 
 @Injectable()
 export class {{titleCase name}}Repository extends BaseKnexRepository {
+  public async findAll(): Promise<{{titleCase name}}> {
+    const knexInstance = await this.getKnexInstance();
 
-  public async findAll(knexInstance): Promise<{{titleCase name}}> {
-    return await knexInstance('TABELA.{{kebabCase name}}')
-      .where('')
+    const {{cammelCase name}} = await knexInstance('TABELA.{{cammelCase name}}').where('').select('*');
+
+    await this.destroyConnection(knexInstance);
+    return {{cammelCase name}};
+  }
+
+  public async findByPrimary(id: string): Promise<{{titleCase name}}> {
+    const knexInstance = await this.getKnexInstance();
+
+    const {{cammelCase name}} = await knexInstance('TABELA.{{cammelCase name}}')
+      .where({ id })
       .select('*');
+
+    await this.destroyConnection(knexInstance);
+    return {{cammelCase name}};
   }
-  public async findByPrimary(knexInstance, id: string): Promise<{{titleCase name}}> {
-    return await knexInstance('TABELA.{{kebabCase name}}')
-      .where({id})
-      .select('*');
+
+  public async createOrUpdate{{titleCase name}}(
+    data: Create{{titleCase name}}Dto,
+    id: string,
+  ): Promise<{{titleCase name}}> {
+    const knexInstance = await this.getKnexInstance();
+
+    const {{cammelCase name}} = await knexInstance('TABELA.{{cammelCase name}}')
+      .upsert({ data, id })
+      .returning('*');
+
+    await this.destroyConnection(knexInstance);
+    return {{cammelCase name}};
   }
-  public async create{{titleCase name}}(knexInstance, data: Create{{titleCase name}}Dto, id: string): Promise<{{titleCase name}}> {
-    return await knexInstance('TABELA.{{kebabCase name}}')
-      .insert({data, id})
-      .returning('*')
-  }
-  public async delete{{titleCase name}}(knexInstance, id: string): Promise<{{titleCase name}}> {
-    return await knexInstance('TABELA.{{kebabCase name}}')
-      .where({id})
-      .del()
+
+  public async delete{{titleCase name}}(id: string): Promise<{{titleCase name}}> {
+    const knexInstance = await this.getKnexInstance();
+
+    const {{cammelCase name}} = await knexInstance('TABELA.{{cammelCase name}}').where({ id }).del();
+
+    await this.destroyConnection(knexInstance);
+    return {{cammelCase name}};
   }
 }

@@ -8,14 +8,11 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
-import { Roles } from 'src/resources/utils/decorators/roles.decorator';
-import { RoleEnum } from 'src/entities/role.entity';
-import { Ok } from 'src/resources/utils/responses/response-types/success.types';
-import { PaginetedCore } from 'src/resources/utils/paginted.core';
-import { Create{{titleCase name}}Dto } from '../dto/create-{{kebabCase name}}.dto';
-import { {{titleCase name}}Service } from '../services/{{kebabCase name}}.service';
+import { Ok } from '../responses/success.types';
+import { Create{{titleCase name}}Dto } from 'src/application/DTOs/create-{{kebabCase name}}.dto';
+import { Create{{titleCase name}}Dto } from 'src/application/DTOs/update-{{kebabCase name}}.dto';
+import { {{titleCase name}}Service } from 'src/application/services/{{kebabCase name}}.service';
 
-@Roles(RoleEnum.READ_PARAMETERS)
 @Controller('/{{kebabCase name}}')
 export class {{titleCase name}}Controller {
   constructor( 
@@ -23,12 +20,12 @@ export class {{titleCase name}}Controller {
   ) {}
   
   @Get()
-  public async findAll{{titleCase name}}() {
+  public async findAll() {
     const {{camelCase name}} = this._{{camelCase name}}Service.findAll();
     return Ok({{camelCase name}});
   }
   @Get()
-  public async findByPrimary{{titleCase name}}(@Param('id') id: string) {
+  public async findByPrimary(@Param('id') id: string) {
     const {{camelCase name}} = this._{{camelCase name}}Service.findByPrimary(id);
     return Ok({{camelCase name}});
   }
@@ -36,12 +33,17 @@ export class {{titleCase name}}Controller {
   public async add(
     @Body() create{{camelCase name}}Dto: Create{{titleCase name}}Dto,
     @Param('id') id:string) {
-    const {{camelCase name}} = this._{{camelCase name}}Service.create{{titleCase name}}(create{{titleCase name}}Dto, id);
+    const {{camelCase name}} = this._{{camelCase name}}Service.create(create{{titleCase name}}Dto, id);
     return {{camelCase name}}
+  }
+  @Put()
+  public async update(@Body() update{{camelCase name}}Dto: Update{{titleCase name}}Dto) {
+    const {{camelCase name}} = this._{{camelCase name}}Service.update(id);
+    return Ok({{camelCase name}});
   }
   @Delete()
   public async delete(@Param('id') id: string) {
-    const {{camelCase name}} = this._{{camelCase name}}Service.delete{{titleCase name}}(
+    const {{camelCase name}} = this._{{camelCase name}}Service.delete(
       id,
     );
     return Ok({{camelCase name}});

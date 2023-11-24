@@ -1,11 +1,11 @@
 import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class Create{{titleCase name}}Dto {
-  @IsString()
-  id: string;
+  @IsNumber()
+  id: number;
 
   constructor(
-    id: string,
+    id: number,
   ) {
     this.id = id;
   }
