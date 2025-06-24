@@ -1,0 +1,16 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document, SchemaTypes, Types } from 'mongoose';
+
+@Schema({ timestamps: true })
+export class {{titleCase name}} {
+
+    @Prop({ type: SchemaTypes.ObjectId, required: true })
+    userId: Types.ObjectId;
+
+
+    @Prop({ type: Boolean, default: true })
+    active: boolean;
+}
+
+export const {{titleCase name}}Schema = SchemaFactory.createForClass({{titleCase name}});
+{{titleCase name}}Schema.index({ userId: 1 });

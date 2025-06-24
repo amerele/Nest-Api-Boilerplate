@@ -1,0 +1,21 @@
+import { Types } from 'mongoose';
+import { {{ titleCase name }}Dto } from '../../components/{{ camelCase name }}/dto/{{ camelCase name }}.dto';
+import { {{ titleCase name }} } from 'src/domain/components/{{ camelCase name }}/schema/{{ camelCase name }}.schema';
+import { IPaginated } from '../../presentation/filters/json-response.contract';
+import { QueryOptions } from '../../types/query-options';
+
+interface I{{titleCase name}}Interface {
+  findAllPaginated: (options: QueryOptions) => Promise<IPaginated<{{titleCase name}}>>;
+  findAll: () => Promise<{{titleCase name}}[]>;
+  findOne: (id: Types.ObjectId) => Promise<{{titleCase name}}>;
+  /*
+  findByUserId: (userId: Types.ObjectId) => Promise<{{ titleCase name }}[]>;
+  findByIds: (ids: Types.ObjectId[]) => Promise<{{ titleCase name }}[]>;
+  createOrUpdate: (id: Types.ObjectId, dto: {{ titleCase name }}Dto) => Promise<{{ titleCase name }}>;
+  */
+  create: (dto: {{ titleCase name }}Dto) => Promise<{{ titleCase name }}>;
+  update: (id: Types.ObjectId, dto: Partial<{{ titleCase name }}Dto>) => Promise<{{ titleCase name }} | null>;
+  delete: (id: Types.ObjectId) => Promise<{{ titleCase name }} | null>;
+}
+
+export { I{{titleCase name}}Interface };

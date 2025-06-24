@@ -1,12 +1,28 @@
-import { Module } from '@nestjs/common';
-import { {{titleCase name}}Controller } from 'src/presentation/controllers/{{kebabCase name}}.controller';
-import { {{titleCase name}}Repository } from 'src/infraestructure/repositories/{{kebabCase name}}.repository';
-import { {{titleCase name}}Service } from 'src/application/services/{{kebabCase name}}.service';
+import { forwardRef, Module } from '@nestjs/common';
+//import { CacheModule } from '@nestjs/cache-manager';
+import { MongooseModule } from '@nestjs/mongoose';
+import { {{titleCase name}}Service } from './service/{{name}}.service';
+import { {{titleCase name}}Controller } from './controller/{{name}}.controller';
+import { {{titleCase name}}Repository } from './repository/{{name}}.repository';
+import { {{titleCase name}}, {{titleCase name}}Schema } from './schema/{{name}}.schema';
 
 @Module({
+  imports: [
+    MongooseModule.forFeature([{ name: {{titleCase name}}.name, schema: {{titleCase name}}Schema }]),
+    /*
+    CacheModule.register({
+      ttl: 6000, // ms
+    }),
+    */
+  ],
   controllers: [{{titleCase name}}Controller],
-  providers: [{{titleCase name}}Repository],
-  exports: [{{titleCase name}}Repository, {{titleCase name}}Service],
+  providers: [
+    {
+      provide: 'I{{titleCase name}}Interface',
+      useClass: {{titleCase name}}Repository,
+    },
+    {{titleCase name}}Service
+  ],
+  exports: [{{titleCase name}}Service, MongooseModule]
 })
 export class {{titleCase name}}Module {}
- 

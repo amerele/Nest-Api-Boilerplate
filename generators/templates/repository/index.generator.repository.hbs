@@ -1,0 +1,84 @@
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+import { {{titleCase name}} } from '../schema/{{camelCase name}}.schema';
+import { {{titleCase name}}Dto } from '../dto/{{camelCase name}}.dto';
+import { I{{titleCase name}}Interface } from '../../../infraestructure/interfaces/I{{titleCase name}}.interface';
+import { QueryOptions } from '../../../types/query-options';
+import {
+  IPaginated,
+  Pagination,
+} from '../../../presentation/filters/json-response.contract';
+
+@Injectable()
+export class {{titleCase name}}Repository implements I{{titleCase name}}Interface {
+constructor(
+    @InjectModel({{titleCase name}}.name)
+    private readonly model: Model<{{titleCase name}}>,
+  ) { }
+
+  public async findAllPaginated(options: QueryOptions): Promise<IPaginated<{{titleCase name}}[]>> {
+    const skip = options.pageIndex * options.pageSize;
+    const limit = options.pageSize;
+
+    const query: any = {
+        active: true, 
+    }
+
+    // Modificar aqui caso seja possível buscar por outra coisa
+    if(options.searchBy){
+        query.name = { $regex: options.searchBy, $options: 'i' };
+    }
+
+    const [data, total] = await Promise.all([
+      this.model
+        .find(query)
+        .skip(skip)
+        .limit(limit)
+        .sort({ [options.orderBy]: options.direction || 'desc' })
+        .lean(),
+      this.model.countDocuments(query).exec(),
+    ]);
+
+    return new Pagination(data, total)
+  }
+
+  public async findAll(): Promise<{{titleCase name}}[]> {
+    return this.model.find().lean();
+  }
+
+  public async findOne(id: Types.ObjectId): Promise<{{titleCase name}}> {
+    return this.model.findOne({ _id: id }).lean();
+  }
+
+/*
+  public async findByUserId(userId: Types.ObjectId): Promise<{{titleCase name}}[]> {
+    return this.model.findOne({ userId }).lean();
+  }
+
+  public async findByIds(ids: Types.ObjectId[]): Promise<{{titleCase name}}[]> {
+    return this.model.find({ _id: { $in: ids } }).lean();
+  }
+
+  public async createOrUpdate(id: Types.ObjectId, dto: {{titleCase name}}Dto): Promise<{{titleCase name}}> {
+    return this.model.findOneAndUpdate({ _id: id }, dto, {
+      upsert: true,
+      new: true,
+    }).lean();
+  }
+*/
+  public async create(dto: {{titleCase name}}Dto): Promise<{{titleCase name}}> {
+    return this.model.create(dto);
+  }
+
+  public async update(id: Types.ObjectId, dto: Partial<{{titleCase name}}Dto>): Promise<{{titleCase name}}> {
+    return this.model.findOneAndUpdate({ _id: id }, dto, {
+      new: true,
+    }).lean();
+  }
+
+  public async delete(id: Types.ObjectId): Promise<void> {
+    this.model.findOneAndUpdate({ _id: id }, { active: false }).lean();
+  }
+}
+ 

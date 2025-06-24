@@ -1,0 +1,32 @@
+import {
+IsArray,
+IsBoolean,
+IsMongoId,
+IsNotEmpty,
+IsNumber,
+IsOptional,
+} from 'class-validator';
+import { Transform } from 'class-transformer';
+import { Types } from 'mongoose';
+
+export class {{titleCase name}}Dto {
+/*
+    @IsMongoId()
+    @IsNotEmpty()
+    @Transform(({ value }) => {
+        if(typeof value === 'string') {
+            return new Types.ObjectId(value);
+        }
+    })
+    userId: Types.ObjectId;
+*/
+
+    @IsBoolean()
+    @IsOptional()
+    @Transform(({ value }) => {
+        if( typeof value === 'string') {
+            return value === 'true';
+        }
+    })
+    active: boolean;
+}

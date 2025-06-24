@@ -1,0 +1,62 @@
+import { Inject, Injectable } from '@nestjs/common';
+import { Types } from 'mongoose';
+import { I{{titleCase name}}Interface } from '../../../infraestructure/interfaces/I{{titleCase name}}.interface';
+import { {{titleCase name}}Dto } from '../dto/{{camelCase name}}.dto';
+import { {{titleCase name}} } from '../schema/{{camelCase name}}.schema';
+import { NotFoundError } from '../../../presentation/filters/error.types';
+import { QueryOptions } from '../../../types/query-options';
+import { IPaginated } from '../../../presentation/filters/json-response.contract';
+
+@Injectable()
+export class {{titleCase name}}Service implements I{{titleCase name}}Interface {
+  constructor(
+    @Inject(I{{titleCase name}}Interface)
+    private readonly repository: I{{titleCase name}}Interface) {}
+
+  public async findAllPaginated(options: QueryOptions): Promise<IPaginated<{{titleCase name}}>> {
+    return this.repository.findAllPaginated(options);
+  }
+
+  public async findAll(): Promise<{{titleCase name}}[]> {
+    return this.repository.findAll();
+  }
+
+  public async findOne(id: Types.ObjectId): Promise<{{titleCase name}}> {
+    return this.validateOne(id);
+  }
+
+ /*
+  public async findByUserId(userId: Types.ObjectId): Promise<{{titleCase name}}[]> {
+    return this.repository.findByUserId(userId);
+  }
+
+  public async findByIds(ids: Types.ObjectId[]): Promise<{{titleCase name}}[]> {
+    return this.repository.findByIds(ids);
+  }
+
+  public async createOrUpdate(id: Types.ObjectId, dto: {{titleCase name}}Dto): Promise<{{titleCase name}}[]> {
+    return this.repository.createOrUpdate(id, dto);
+  }
+*/
+  public async create(dto: {{titleCase name}}Dto): Promise<{{titleCase name}}> {
+    return this.repository.create(dto);
+  }
+
+  public async update(id: Types.ObjectId, dto: Partial<{{titleCase name}}Dto>): Promise<{{titleCase name}}> {
+    return this.repository.update(id, dto);
+  }
+
+  public async delete(id: Types.ObjectId): Promise<void> {
+    return this.repository.delete(id);
+  }
+
+  // MÉTODOS PRIVADOS
+
+  private async validateOne(id: Types.ObjectId): Promise<{{titleCase name}}> {
+    const {{camelCase name}} = await this.repository.findOne(id);
+    if (!{{camelCase name}}) {
+      throw new NotFoundError(`{{titleCase name}} not found`);
+    }
+    return {{camelCase name}};
+  }
+}

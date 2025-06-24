@@ -1,52 +1,86 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Put,
-  Param,
-  Delete,
-  Query,
+Controller,
+Get,
+Post,
+Body,
+Put,
+Param,
+Delete,
+Query,
+UseGuards,
 } from '@nestjs/common';
-import { Ok } from '../responses/success.types';
-import { Body{{titleCase name}}Dto } from 'src/application/DTOs/{{kebabCase name}}/body-{{kebabCase name}}.dto';
-import { {{titleCase name}}Service } from 'src/application/services/{{kebabCase name}}.service';
+import { Types } from 'mongoose';
+import { JwtAuthGuard } from '../../../infraestructure/auth/guards/jwt-auth.guard';
+import { ReqUser } from '../../../infraestructure/auth/types';
+import { CurrentUser } from '../../../presentation/decorators/currentUser.decorator';
+import { OkResponse, Created } from '../../../presentation/filters/success.types';
+import { IJsonResponse, IPaginated } from '../../../presentation/filters/json-response.contract';
+import { QueryOptions } from '../../../types/query-options';
+import { {{titleCase name}}Dto } from '../dto/{{camelCase name}}.dto';
+import { {{titleCase name}}Service } from '../service/{{camelCase name}}.service';
+import { {{titleCase name}} } from '../schema/{{camelCase name}}.schema';
 
-@Controller('/{{kebabCase name}}')
+@Controller('/{{camelCase name}}')
+@UseGuards(JwtAuthGuard)
 export class {{titleCase name}}Controller {
-  constructor( 
-    private readonly _{{camelCase name}}Service: {{titleCase name}}Service
-  ) {}
-  
-  @Get()
-  public async findAll() {
-    const {{camelCase name}} = this._{{camelCase name}}Service.findAll();
-    return Ok({{camelCase name}});
-  }
-  @Get()
-  public async findByPrimary(@Param('id') id: number) {
-    const {{camelCase name}} = this._{{camelCase name}}Service.findByPrimary(id);
-    return Ok({{camelCase name}});
-  }
-  @Post()
-  public async add(
-    @Body() body: Body{{titleCase name}}Dto,
-    @Param('id') id: number) {
-    const {{camelCase name}} = this._{{camelCase name}}Service.createOrUpdate(body, id);
-    return {{camelCase name}}
-  }
-  @Put()
-  public async update(@Body() body: Body{{titleCase name}}Dto, id: number) {
-    const {{camelCase name}} = this._{{camelCase name}}Service.createOrUpdate(body, id);
-    return Ok({{camelCase name}});
-  }
-  @Delete()
-  public async delete(@Param('id') id: number) {
-    const {{camelCase name}} = this._{{camelCase name}}Service.delete(
-      id,
-    );
-    return Ok({{camelCase name}});
-  }
-}
+    constructor(
+    private readonly {{camelCase name}}Service: {{titleCase name}}Service
+    ) {}
 
- 
+    @Get('admin')
+    public async findAllPaginated(
+        @Query('options') options: QueryOptions
+    ): Promise<IJsonResponse<IPaginated<{{titleCase name}}>>> {
+        return this.{{camelCase name}}Service
+          .findAllPaginated(options)
+          .then((result) => new OkResponse(result));
+    }
+
+    @Get()
+    public async findAll(
+    ): Promise<IJsonResponse<{{titleCase name}}[]>> {
+        return this.{{camelCase name}}Service
+          .findAll()
+          .then((result) => new OkResponse(result));
+    }
+
+    @Get(':id')
+    public async findOne(@Param('id') id: string): Promise<IJsonResponse<{{titleCase name}}>> {
+      return this.{{camelCase name}}Service
+          .findOne(new Types.ObjectId(id))
+          .then((result) => new OkResponse(result));
+    }
+/*
+    @Get('/user/:userId')
+    public async findByUserId(@Param('userId') userId: string): Promise<IJsonResponse<{{titleCase name}}[]>> {
+      return this.{{camelCase name}}Service
+          .findByUserId(new Types.ObjectId(userId))
+          .then((result) => new OkResponse(result));
+    }
+*/
+    @Post()
+    public async create(
+        @Body() dto: {{titleCase name}}Dto,
+    ): Promise<IJsonResponse<{{titleCase name}}>> {
+        return this.{{camelCase name}}Service
+            .create(dto)
+            .then((result) => new Created(result));
+    }
+
+    @Put(':id')
+    public async update(
+        @Body() dto: {{titleCase name}}Dto,
+        @Param('id') id: string
+    ): Promise<IJsonResponse<{{titleCase name}}>> {
+        return this.{{camelCase name}}Service
+            .update(new Types.ObjectId(id), dto)
+            .then((result) => new OkResponse(result));
+    }
+
+    @Delete(':id')
+    public async delete(@Param('id') id: string): Promise<IJsonResponse<string>> {
+        return this.{{camelCase name}}Service
+            .delete(new Types.ObjectId(id))
+            .then(() => new OkResponse('Deletado com sucesso'));
+    }
+}
